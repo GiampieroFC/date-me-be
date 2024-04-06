@@ -6,7 +6,7 @@ import { connectMongo } from './data/mongodb/mongo.database';
 import { Server } from './server';
 
 const serverProps = {
-    PORT: process.env.PORT || 3001,
+    PORT: process.env.PORT || 3000,
     logs: Logs.Short
 };
 

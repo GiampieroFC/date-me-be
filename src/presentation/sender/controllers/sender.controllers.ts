@@ -5,6 +5,8 @@ import { SenderDto } from '../../../domain/dtos/sender.dtos';
 import { SenderToRegister } from '../../../types';
 import { ZodError } from 'zod';
 import { SenderModel } from '../../../data/mongodb/models/sender.mongo';
+import { setCookies } from '../../../utils/setCookies.utils';
+import { clearCookies } from '../../../utils/clearCookies.utils';
 
 export class SenderControllers {
 
@@ -67,12 +69,7 @@ export class SenderControllers {
                 id,
                 email,
             });
-            res.cookie(process.env.TOKEN_NAME!, token, {
-                priority: 'high',
-                maxAge: 172800000,
-                httpOnly: true,
-                secure: process.env.MODE === process.env.PRODUCTION
-            }).status(201).json({
+            res.cookie(...setCookies(token)).status(201).json({
                 ok: true,
                 sender: { id, name, email, confirmed, provider }
             });
@@ -107,12 +104,7 @@ export class SenderControllers {
                 id,
                 email,
             });
-            res.cookie(process.env.TOKEN_NAME!, token, {
-                priority: 'high',
-                maxAge: 172800000,
-                httpOnly: true,
-                secure: process.env.MODE === process.env.PRODUCTION
-            }).status(201).json({
+            res.cookie(...setCookies(token)).status(201).json({
                 ok: true,
                 sender: { id, name, email, confirmed, provider }
             });
@@ -135,10 +127,7 @@ export class SenderControllers {
     static logout = async (req: Request, res: Response) => {
 
         try {
-            res.clearCookie(process.env.TOKEN_NAME!, {
-                httpOnly: true,
-                secure: process.env.MODE === process.env.PRODUCTION
-            }).status(200).json({
+            res.clearCookie(...clearCookies()).status(200).json({
                 status: 'logged out'
             });
         } catch (error) {
